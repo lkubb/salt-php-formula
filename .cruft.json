@@ -1,0 +1,89 @@
+{
+  "template": "https://github.com/lkubb/salt-template-formula",
+  "commit": "50a694adefdf54f1ca465db433c033ca764942bc",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "_extensions": [
+        "local_extensions.YAMLDumper"
+      ],
+      "_jinja2_env_vars": {
+        "block_start_string": "{!",
+        "block_end_string": "!}",
+        "variable_start_string": "{=",
+        "variable_end_string": "=}",
+        "comment_start_string": "{@",
+        "comment_end_string": "@}"
+      },
+      "name": "PHP",
+      "abbr": "php",
+      "abbr_pysafe": "php",
+      "pkg": "php",
+      "needs_repo": "y",
+      "config": "/etc/php.ini",
+      "service": "",
+      "subcomponent": "fpm",
+      "subcomponent_config": "/etc/php/{version}/fpm/php-fpm.conf",
+      "git_username": "lkubb",
+      "_lookup": {
+        "repos_req_pkgs": [],
+        "cli": {
+          "ini": "/etc/php/{version}/cli/conf.d/50-salt.ini"
+        },
+        "fpm": {
+          "config": "/etc/php/{version}/fpm/php-fpm.conf",
+          "ini": "/etc/php/{version}/fpm/conf.d/50-salt.ini",
+          "pools": "/etc/php/{version}/fpm/pool.d",
+          "pool_defaults": {
+            "user": "www-data",
+            "group": "www-data",
+            "listen": "/run/php/fpm-{name}.sock",
+            "listen.owner": "www-data",
+            "listen.group": "www-data",
+            "pm": "dynamic",
+            "pm.max_children": 5,
+            "pm.start_servers": 2,
+            "pm.min_spare_servers": 1,
+            "pm.max_spare_servers": 3
+          },
+          "service": {
+            "name": "php{version}-fpm",
+            "unit": "/etc/systemd/system/{name}.service.d/override.conf"
+          }
+        },
+        "pkg": {
+          "php": "php{version}",
+          "fpm": "php{version}-fpm",
+          "default": "php{version}-{name}"
+        }
+      },
+      "_settings": {
+        "cli": {
+          "ini": {}
+        },
+        "config": {},
+        "fpm": {
+          "enable": true,
+          "ini": {},
+          "config": {
+            "error_log": "/var/log/php{version}-fpm.log",
+            "pid": "/run/php/php{version}-fpm.pid"
+          },
+          "pools": {},
+          "remove_default_pool": true,
+          "service": {
+            "harden": true,
+            "requires_mount": [],
+            "wants": []
+          }
+        },
+        "modules": [],
+        "module_install_recommends": false,
+        "use_external_repo": true,
+        "version": "8.1"
+      },
+      "_template": "https://github.com/lkubb/salt-template-formula"
+    }
+  },
+  "directory": null
+}

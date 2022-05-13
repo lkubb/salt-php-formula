@@ -1,0 +1,24 @@
+{%- macro render_setting(var, val) %}
+{%-   if val is number or val is string %}
+{{- var }} = {{ val }}
+{%-   elif val is iterable %}
+{%-     if "error_reporting" == var %}
+{{- var }} = {{ val | join("&") }}
+{%-     elif "extension" == var %}
+{{- var }} = {{ val | join("\nextension = ") }}
+{%-     else %}
+{{- var }} = {{ val | join(",") }}
+{%-     endif %}
+{%-   endif %}
+{%- endmacro -%}
+
+; This file is managed by Salt.
+; Manual changes might be overwritten.
+
+[{{ pool_name }}]
+{%- for setting, value in php.fpm.pools[pool_name] | dictsort %}
+{%- if setting in ["listen", "access.log"] %}
+{%-   set value = value.format(name=pool_name, version=php.version) %}
+{%- endif %}
+{{ render_setting(setting, value) }}
+{%- endfor %}

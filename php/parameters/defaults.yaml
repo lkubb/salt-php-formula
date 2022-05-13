@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  lookup:
+    rootgroup: root
+    enablerepo:
+      stable: true
+    config: '/etc/php.ini'
+    cli:
+      ini: /etc/php/{version}/cli/conf.d/50-salt.ini
+    fpm:
+      config: /etc/php/{version}/fpm/php-fpm.conf
+      ini: /etc/php/{version}/fpm/conf.d/50-salt.ini
+      pool_defaults:
+        group: www-data
+        listen: /run/php/fpm-{name}.sock
+        listen.group: www-data
+        listen.owner: www-data
+        pm: dynamic
+        pm.max_children: 5
+        pm.max_spare_servers: 3
+        pm.min_spare_servers: 1
+        pm.start_servers: 2
+        user: www-data
+      pools: /etc/php/{version}/fpm/pool.d
+      service:
+        name: php{version}-fpm
+        unit: /etc/systemd/system/{name}.service.d/override.conf
+    pkg:
+      default: php{version}-{name}
+      fpm: php{version}-fpm
+      php: php{version}
+    repos_req_pkgs: []
+  cli:
+    ini: {}
+  config: {}
+  fpm:
+    config:
+      error_log: /var/log/php{version}-fpm.log
+      pid: /run/php/php{version}-fpm.pid
+    enable: true
+    ini: {}
+    pools: {}
+    remove_default_pool: true
+    service:
+      harden: true
+      requires_mount: []
+      wants: []
+  module_install_recommends: false
+  modules: []
+  use_external_repo: true
+  version: '8.1'
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...
