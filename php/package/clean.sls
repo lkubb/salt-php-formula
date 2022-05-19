@@ -18,3 +18,6 @@ php-package-clean-pkg-removed:
     - name: {{ php.lookup.pkg.php.format(version=php.version) }}
     - require:
       - sls: {{ sls_config_clean }}
+{%- if php.fpm.enable %}
+      - sls: {{ sls_fpm_clean }}
+{%- endif %}
