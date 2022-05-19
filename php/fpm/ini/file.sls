@@ -23,7 +23,7 @@ php-fpm-ini-file-file-managed:
     - makedirs: True
     - template: jinja
     - context:
-        lookup_key: 'php:fpm:ini'
+        lookup_key: 'fpm:ini'
         php: {{ php | json }}
     - require:
       - sls: {{ sls_package_install }}
