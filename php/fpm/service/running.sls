@@ -9,7 +9,9 @@
 
 include:
   - {{ sls_config_file }}
+{%- if php.fpm.pools %}
   - {{ sls_pools }}
+{%- endif %}
   - {{ sls_ini }}
 
 php-fpm-service-running-service-running:
@@ -18,5 +20,7 @@ php-fpm-service-running-service-running:
     - enable: True
     - watch:
       - sls: {{ sls_config_file }}
+{%- if php.fpm.pools %}
       - sls: {{ sls_pools }}
+{%- endif %}
       - sls: {{ sls_ini }}
