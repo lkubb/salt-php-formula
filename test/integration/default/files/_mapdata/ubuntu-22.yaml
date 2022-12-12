@@ -1,0 +1,82 @@
+# yamllint disable rule:indentation rule:line-length
+# Ubuntu-22.04
+---
+values:
+  added_in_defaults: defaults_value
+  added_in_lookup: lookup_value
+  added_in_pillar: pillar_value
+  lookup:
+    arch: amd64
+    rootgroup: root
+    enablerepo:
+      stable: true
+    config: '/etc/php.ini'
+    fpm:
+      config: /etc/php/{version}/fpm/php-fpm.conf
+    cli:
+      ini: /etc/php/{version}/cli/conf.d/50-salt.ini
+    fpm:
+      config: /etc/php/{version}/fpm/php-fpm.conf
+      ini: /etc/php/{version}/fpm/conf.d/50-salt.ini
+      pool_defaults:
+        group: www-data
+        listen: /run/php/fpm-{name}.sock
+        listen.group: www-data
+        listen.owner: www-data
+        pm: dynamic
+        pm.max_children: 5
+        pm.max_spare_servers: 3
+        pm.min_spare_servers: 1
+        pm.start_servers: 2
+        user: www-data
+      pools: /etc/php/{version}/fpm/pool.d
+      service:
+        name: php{version}-fpm
+        unit: /etc/systemd/system/{name}.service.d/override.conf
+    pkg:
+      default: php{version}-{name}
+      fpm: php{version}-fpm
+      php: php{version}
+    repos_req_pkgs: []
+  cli:
+    ini: {}
+  config: {}
+  fpm:
+    config:
+      error_log: /var/log/php{version}-fpm.log
+      pid: /run/php/php{version}-fpm.pid
+    enable: true
+    ini: {}
+    pools: {}
+    remove_default_pool: true
+    service:
+      harden: true
+      requires_mount: []
+      wants: []
+  module_install_recommends: false
+  modules: []
+  use_external_repo: true
+  version: '8.1'
+  map_jinja:
+    sources:
+    - Y:G@osarch
+    - Y:G@os_family
+    - Y:G@os
+    - Y:G@osfinger
+    - C@php
+    - Y:G@id
+  master: template-master
+  tofs:
+    files_switch:
+    - any/path/can/be/used/here
+    - id
+    - roles
+    - osfinger
+    - os
+    - os_family
+    source_files:
+      php-config-file-file-managed:
+      - example.tmpl.jinja
+      php-fpm-config-file-file-managed:
+      - fpm-example.tmpl.jinja
+  winner: pillar
