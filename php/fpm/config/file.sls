@@ -1,26 +1,25 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_package_install = tplroot ~ '.fpm.package.install' %}
+{%- set tplroot = tpldir.split("/")[0] %}
+{%- set sls_package_install = tplroot ~ ".fpm.package.install" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
 include:
   - {{ sls_package_install }}
 
-php-fpm-config-file-file-managed:
+PHP-FPM config is managed:
   file.managed:
     - name: {{ php.lookup.fpm.config.format(version=php.version) }}
-    - source: {{ files_switch(['php-fpm.conf.j2'],
-                              lookup='php-fpm-config-file-file-managed',
-                              use_subpath=True
+    - source: {{ files_switch(["php-fpm.conf.j2"],
+                              lookup="PHP-FPM config is managed",
+                              use_subpath=true
                  )
               }}
-    - mode: 644
+    - mode: '0644'
     - user: root
     - group: {{ php.lookup.rootgroup }}
-    - makedirs: True
+    - makedirs: true
     - template: jinja
     - context:
         php: {{ php | json }}

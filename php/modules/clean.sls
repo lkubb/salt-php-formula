@@ -1,12 +1,15 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    Removes PHP module packages.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 
 {%- if php.modules %}
 
-php-modules-clean-pkg-removed:
+PHP modules are absent:
   pkg.removed:
     - pkgs:
 {%-   for mod in php.modules %}

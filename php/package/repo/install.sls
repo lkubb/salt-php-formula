@@ -1,20 +1,10 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
-{%- if grains['os'] in ['Debian', 'Ubuntu'] %}
-
-Ensure PHP APT repository can be managed:
-  pkg.installed:
-    - pkgs:
-      - python3-apt                    # required by Salt
-{%-   if 'Ubuntu' == grains['os'] %}
-      - python-software-properties    # to better support PPA repositories
-{%-   endif %}
-{%- endif %}
+# There is no need for python-apt anymore.
 
 {%- if php.lookup.repos_req_pkgs %}
 
@@ -32,7 +22,7 @@ PHP {{ reponame }} signing key is available:
   file.managed:
     - name: {{ php.lookup.repos[reponame].keyring.file }}
     - source: {{ files_switch([salt["file.basename"](php.lookup.repos[reponame].keyring.file)],
-                          lookup='PHP ' ~ reponame ~ ' signing key is available')
+                          lookup="PHP " ~ reponame ~ " signing key is available")
               }}
       - {{ php.lookup.repos[reponame].keyring.source }}
     - source_hash: {{ php.lookup.repos[reponame].keyring.source_hash }}
@@ -50,11 +40,11 @@ PHP {{ reponame }} repository is available:
     - {{ conf }}: {{ val }}
 {%-       endif %}
 {%-     endfor %}
-{%-     if php.lookup.pkg_manager in ['dnf', 'yum', 'zypper'] %}
+{%-     if php.lookup.pkg_manager in ["dnf", "yum", "zypper"] %}
     - enabled: 1
 {%-     endif %}
     - require_in:
-      - php-package-install-pkg-installed
+      - PHP is installed
 
 {%-   else %}
 
@@ -67,12 +57,12 @@ PHP {{ reponame }} signing key is absent:
 
 PHP {{ reponame }} repository is disabled:
   pkgrepo.absent:
-{%-     for conf in ['name', 'ppa', 'ppa_auth', 'keyid', 'keyid_ppa', 'copr'] %}
+{%-     for conf in ["name", "ppa", "ppa_auth", "keyid", "keyid_ppa", "copr"] %}
 {%-       if conf in php.lookup.repos[reponame] and php.lookup.repos[reponame][conf] is not none %}
     - {{ conf }}: {{ php.lookup.repos[reponame][conf] }}
 {%-       endif %}
 {%-     endfor %}
     - require_in:
-      - php-package-install-pkg-installed
+      - PHP is installed
 {%-   endif %}
 {%- endfor %}

@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/lkubb/salt-template-formula",
-  "commit": "09d23d7be4069023a5dd2201c3db5b82049391a1",
+  "commit": "a63c03d95375f235c2d4a6159a26ae48d4fdc40b",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -25,7 +25,7 @@
       "subcomponent": "fpm",
       "subcomponent_config": "/etc/php/{version}/fpm/php-fpm.conf",
       "git_username": "lkubb",
-      "_lookup": {
+      "lookup": {
         "repos_req_pkgs": [],
         "cli": {
           "ini": "/etc/php/{version}/cli/conf.d/50-salt.ini"
@@ -57,7 +57,7 @@
           "default": "php{version}-{name}"
         }
       },
-      "_settings": {
+      "settings": {
         "cli": {
           "ini": {}
         },

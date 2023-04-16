@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- set sls_php_install = tplroot ~ ".package.install" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
@@ -27,21 +26,21 @@ PHP-FPM default www pool is removed:
 PHP-FPM service overrides are installed:
   file.managed:
     - name: {{ php.lookup.fpm.service.unit.format(name=php.lookup.fpm.service.name.format(version=php.version)) }}
-    - source: {{ files_switch(['php-fpm.service.conf.j2'],
-                              lookup='PHP-FPM service overrides are installed',
+    - source: {{ files_switch(["php-fpm.service.conf.j2"],
+                              lookup="PHP-FPM service overrides are installed",
                               use_subpath=True
                  )
               }}
-    - mode: 644
+    - mode: '0644'
     - user: root
     - group: {{ php.lookup.rootgroup }}
-    - makedirs: True
+    - makedirs: true
     - template: jinja
     - context:
         php: {{ php | json }}
     - require:
       - PHP-FPM is installed
-{%- if 'systemctl' | which %}
+{%- if "systemctl" | which %}
   # this executes systemctl daemon-reload
   module.run:
     - service.systemctl_reload: []

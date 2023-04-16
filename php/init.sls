@@ -1,7 +1,14 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{#-
+    *Meta-state*.
+
+    This installs the php package,
+    manages the php configuration file
+
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 
 include:

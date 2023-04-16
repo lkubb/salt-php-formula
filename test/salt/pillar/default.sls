@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
 php:
@@ -10,8 +9,6 @@ php:
     enablerepo:
       stable: true
     config: '/etc/php.ini'
-    fpm:
-      config: /etc/php/{version}/fpm/php-fpm.conf
     cli:
       ini: /etc/php/{version}/cli/conf.d/50-salt.ini
     fpm:

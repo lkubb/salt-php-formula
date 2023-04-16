@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_package_install = tplroot ~ '.package.install' %}
+{%- set tplroot = tpldir.split("/")[0] %}
+{%- set sls_package_install = tplroot ~ ".package.install" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
 
 include:
@@ -10,7 +9,7 @@ include:
 
 {%- if php.modules %}
 
-php-modules-install-pkg-installed:
+PHP modules are installed:
   pkg.installed:
     - pkgs:
 {%-   for mod in php.modules %}
