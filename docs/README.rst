@@ -171,12 +171,13 @@ Removes the PHP-FPM configuration.
 
 ``php.fpm.ini.clean``
 ^^^^^^^^^^^^^^^^^^^^^
-
+Removes the PHP-FPM php.ini.
 
 
 ``php.fpm.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-
+Removes PHP-FPM and service overrides and has a
+dependency on `php.fpm.config.clean`_.
 
 
 ``php.fpm.pools.clean``

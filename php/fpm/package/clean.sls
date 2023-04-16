@@ -1,5 +1,10 @@
 # vim: ft=sls
 
+{#-
+    Removes PHP-FPM and service overrides and has a
+    dependency on `php.fpm.config.clean`_.
+#}
+
 {%- set tplroot = tpldir.split("/")[0] %}
 {%- set sls_config_clean = tplroot ~ ".fpm.config.clean" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
