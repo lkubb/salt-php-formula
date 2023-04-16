@@ -40,10 +40,3 @@ PHP-FPM service overrides are installed:
         php: {{ php | json }}
     - require:
       - PHP-FPM is installed
-{%- if "systemctl" | which %}
-  # this executes systemctl daemon-reload
-  module.run:
-    - service.systemctl_reload: []
-    - onchanges:
-      - file: {{ php.lookup.fpm.service.unit.format(name=php.lookup.fpm.service.name.format(version=php.version)) }}
-{%- endif %}
