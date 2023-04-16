@@ -70,11 +70,6 @@ manages the php configuration file
 Installs the php package only.
 
 
-``php.package.install``
-^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
 ``php.package.repo``
 ^^^^^^^^^^^^^^^^^^^^
 This state will install the configured php repository.
