@@ -19,17 +19,11 @@ include:
 {%- else %}
 {%-   for reponame, enabled in php.lookup.enablerepo.items() %}
 {%-     if enabled %}
-{%-       if php.lookup.repos[reponame].get("keyring") %}
-
-PHP {{ reponame }} signing key is absent:
-  file.absent:
-    - name: {{ php.lookup.repos[reponame].keyring.file }}
-{%-       endif %}
 
 PHP {{ reponame }} repository is absent:
   pkgrepo.absent:
 {%-       for conf in ["name", "ppa", "ppa_auth", "keyid", "keyid_ppa", "copr"] %}
-{%-         if conf in php.lookup.repos[reponame] and php.lookup.repos[reponame][conf] is not none %}
+{%-         if conf in php.lookup.repos[reponame] %}
     - {{ conf }}: {{ php.lookup.repos[reponame][conf] }}
 {%-         endif %}
 {%-       endfor %}

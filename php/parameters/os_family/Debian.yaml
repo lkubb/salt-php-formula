@@ -24,8 +24,6 @@ values:
           deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg]
           https://packages.sury.org/php {{ grains.oscodename }} main
         file: /etc/apt/sources.list.d/php.list
-        keyring:
-          file: /usr/share/keyrings/deb.sury.org-php.gpg
-          source: https://packages.sury.org/php/apt.gpg
-          source_hash: b3ea944563435e54bb64f181ee8bc26200985d09164cdc4c1702fc3ef051f19d
+        key_url: https://packages.sury.org/php/apt.gpg
+        aptkey: false
 ...
