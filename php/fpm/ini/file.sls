@@ -3,7 +3,7 @@
 {%- set tplroot = tpldir.split("/")[0] %}
 {%- set sls_package_install = tplroot ~ ".fpm.package.install" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
-{%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
+{%- from tplroot ~ "/libtofsstack.jinja" import files_switch with context %}
 
 include:
   - {{ sls_package_install }}
@@ -11,9 +11,11 @@ include:
 PHP-FPM php.ini is managed:
   file.managed:
     - name: {{ php.lookup.fpm.ini.format(version=php.version) }}
-    - source: {{ files_switch(["php.ini.j2"],
-                              lookup="PHP-FPM php.ini is managed",
-                              use_subpath=True
+    - source: {{ files_switch(
+                    ["php_fpm.ini", "php.ini.j2"],
+                    config=php,
+                    lookup="PHP-FPM php.ini is managed",
+                    use_subpath=true,
                  )
               }}
     - mode: '0644'

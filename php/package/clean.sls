@@ -2,7 +2,7 @@
 
 {#-
     Removes the php package.
-    Has a depency on `php.config.clean`_.
+    Has a dependency on `php.config.clean`_.
 #}
 
 {%- set tplroot = tpldir.split("/")[0] %}

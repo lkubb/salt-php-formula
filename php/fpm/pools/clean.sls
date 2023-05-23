@@ -6,7 +6,6 @@
 
 {%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as php with context %}
-{%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
 {%- if php.fpm.pools %}
 

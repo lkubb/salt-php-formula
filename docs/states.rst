@@ -26,6 +26,12 @@ This state will install the configured php repository.
 This works for apt/dnf/yum/zypper-based distributions only by default.
 
 
+``php.modules``
+^^^^^^^^^^^^^^^
+Installs PHP module packages.
+Has a dependency on `php.package`_.
+
+
 ``php.config``
 ^^^^^^^^^^^^^^
 Manages the php package configuration.
@@ -69,12 +75,6 @@ Has a dependency on `php.fpm.config`_, `php.fpm.ini`_
 and `php.fpm.pools`_.
 
 
-``php.modules``
-^^^^^^^^^^^^^^^
-Installs PHP module packages.
-Has a dependency on `php.package`_.
-
-
 ``php.clean``
 ^^^^^^^^^^^^^
 *Meta-state*.
@@ -88,13 +88,18 @@ uninstalls the package.
 ``php.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^
 Removes the php package.
-Has a depency on `php.config.clean`_.
+Has a dependency on `php.config.clean`_.
 
 
 ``php.package.repo.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 This state will remove the configured php repository.
 This works for apt/dnf/yum/zypper-based distributions only by default.
+
+
+``php.modules.clean``
+^^^^^^^^^^^^^^^^^^^^^
+Removes PHP module packages.
 
 
 ``php.config.clean``
@@ -133,10 +138,5 @@ Removes all managed PHP-FPM pools.
 ``php.fpm.service.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Stops the PHP-FPM service and disables it at boot time.
-
-
-``php.modules.clean``
-^^^^^^^^^^^^^^^^^^^^^
-Removes PHP module packages.
 
 
