@@ -22,3 +22,12 @@ PHP modules are absent:
 {%-     endif %}
 {%-   endfor %}
 {%- endif %}
+
+{%- if php.extra_pkgs %}
+
+Extra package dependencies are installed:
+  pkg.removed:
+    - pkgs: {{ php.extra_pkgs }}
+    - require:
+      - sls: {{ sls_package_install }}
+{%- endif %}

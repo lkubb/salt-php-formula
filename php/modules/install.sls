@@ -25,3 +25,13 @@ PHP modules are installed:
     - require:
       - sls: {{ sls_package_install }}
 {%- endif %}
+
+{%- if php.extra_pkgs %}
+
+Extra package dependencies are installed:
+  pkg.installed:
+    - pkgs: {{ php.extra_pkgs }}
+    - install_recommends: {{ php.module_install_recommends }}
+    - require:
+      - sls: {{ sls_package_install }}
+{%- endif %}
