@@ -1,10 +1,12 @@
 {%- macro render_setting(var, val) %}
-{%-   if val is number or val is string %}
+{%-   if val is string and "=" in val %}
+{{ var }} = "{{ val }}"
+{%-   elif val is number or val is string %}
 {{- var }} = {{ val }}
 {%-   elif val is iterable %}
-{%-     if "error_reporting" == var %}
+{%-     if var == "error_reporting" %}
 {{- var }} = {{ val | join("&") }}
-{%-     elif "extension" == var %}
+{%-     elif var == "extension" %}
 {{- var }} = {{ val | join("\nextension = ") }}
 {%-     else %}
 {{- var }} = {{ val | join(",") }}
