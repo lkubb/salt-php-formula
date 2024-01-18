@@ -80,7 +80,6 @@
         },
         "modules": [],
         "module_install_recommends": false,
-        "use_external_repo": true,
         "version": "8.1"
       },
       "_template": "https://github.com/lkubb/salt-template-formula"

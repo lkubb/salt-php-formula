@@ -11,7 +11,9 @@ include:
 {%- if php.fpm.pools %}
   - {{ sls_pools }}
 {%- endif %}
+{%- if php.lookup.fpm.ini %}
   - {{ sls_ini }}
+{%- endif %}
 
 PHP-FPM service is running:
   service.running:
@@ -22,4 +24,6 @@ PHP-FPM service is running:
 {%- if php.fpm.pools %}
       - sls: {{ sls_pools }}
 {%- endif %}
+{%- if php.lookup.fpm.ini %}
       - sls: {{ sls_ini }}
+{%- endif %}

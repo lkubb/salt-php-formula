@@ -21,12 +21,17 @@ include:
 {%-     if enabled %}
 
 PHP {{ reponame }} repository is absent:
+{%-       if "rpm" in php.lookup.repos[reponame] %}
+  pkg.removed:
+    - name: {{ php.lookup.repos[reponame].name }}
+{%-       else %}
   pkgrepo.absent:
-{%-       for conf in ["name", "ppa", "ppa_auth", "keyid", "keyid_ppa", "copr"] %}
-{%-         if conf in php.lookup.repos[reponame] %}
+{%-         for conf in ["name", "ppa", "ppa_auth", "keyid", "keyid_ppa", "copr"] %}
+{%-           if conf in php.lookup.repos[reponame] %}
     - {{ conf }}: {{ php.lookup.repos[reponame][conf] }}
-{%-         endif %}
-{%-       endfor %}
+{%-           endif %}
+{%-         endfor %}
+{%-       endif %}
 {%-     endif %}
 {%-   endfor %}
 {%- endif %}

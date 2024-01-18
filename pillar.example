@@ -4,23 +4,54 @@
 php:
 
   cli:
+      # PHP CLI-specific php.ini configuration
     ini: {}
+    # Default php.ini configuration
   config: {}
+    # PHP-FPM settings
   fpm:
+      # PHP-FPM global configuration
     config:
       error_log: /var/log/php{version}-fpm.log
       pid: /run/php/php{version}-fpm.pid
+      # Whether to install php-fpm
     enable: true
+      # PHP-FPM-specific php.ini configuration.
+      # On systems that do not support a separate file, this will be rendered
+      # into each pool via php_value/php_flag. Overrides per pool are possible.
     ini: {}
+      # Mapping of pool name to mapping of pool configuration (conf: val).
+      # Special pool configuration values are `ini` (default php.ini configuration)
+      # and `ini_force` (php.ini configuration that cannot be overridden via `ini_set`).
     pools: {}
+      # Example:
+    # www:
+    #   pm.max_children: 53
+    #   pm.start_servers: 13
+    #   pm.min_spare_servers: 13
+    #   pm.max_spare_servers: 39
+    #   env[HOSTNAME]: $HOSTNAME
+    #   ini:
+    #     memory_limit: 512M
+    #   ini_force:
+    #     max_execution_time: 360
+      # Remove the default pool
     remove_default_pool: true
+      # php-fpm service settings
     service:
+        # Apply some hardening to the unit file
       harden: true
+        # service unit `RequiresMountsFor=`
       requires_mount: []
+        # service unit `Wants=`
       wants: []
+    # On Debian, if this is false, do not install recommends
   module_install_recommends: false
+    # List of PHP module packages to install. Names will be rendered
+    # via a lookup in lookup:pkg, so `mbstring` would be rendered
+    # to `php8.3-mbstring`, for example (depending on the OS).
   modules: []
-  use_external_repo: true
+    # The exact major.minor PHP version to install
   version: '8.1'
 
   lookup:

@@ -52,7 +52,6 @@ php:
       wants: []
   module_install_recommends: false
   modules: []
-  use_external_repo: true
   version: '8.1'
 
   tofs:

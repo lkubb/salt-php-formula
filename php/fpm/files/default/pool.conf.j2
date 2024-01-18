@@ -12,13 +12,65 @@
 {%-   endif %}
 {%- endmacro -%}
 
+{%- macro render_ini(ini, val, admin=false) %}
+{%-   set typ = "value" %}
+{%-   set adm = "admin_" if admin else "" %}
+{%-   if val | string | lower in ["true", "false", "on", "off", "1", "0", "yes", "no"] %}
+{%-     set typ = "flag" %}
+{%-     if val | string | lower in ["true", "on", "1", "yes"] %}
+{%-       set val = "on" %}
+{%-     else %}
+{%-       set val = "off" %}
+{%-     endif %}
+{%-   endif %}
+{{- "php_{adm}{typ}".format(adm=adm, typ=typ) }}[{{ ini }}] = {{ render_ini_val(val) }}
+{%- endmacro -%}
+
+{%- macro render_ini_val(val) -%}
+{%-   if val is string and "=" in val %}"{{ val }}"
+{%-   elif val is number or val is string %}{{ val }}
+{%-   elif val is iterable %}
+{%-     if var == "error_reporting" %}{{ val | join("&") }}
+{%-     elif var == "extension" %}{{ val | join("\nextension = ") }}
+{%-     else %}{{ val | join(",") }}
+{%-     endif %}
+{%-   endif %}
+{%- endmacro -%}
+
+{%- set pool_config = salt["defaults.deepcopy"](php.fpm.pools[pool_name]) %}
+
+{#-
+    On some systems, there is no php-fpm specific php.ini. We'll merge those
+    settings as pool settings, respecting overrides per pool.
+#}
+{%- if not php.lookup.fpm.ini %}
+{%-   set defaults = {} %}
+{%-   for ini, val in php.fpm.ini | dictsort %}
+{%-     if val is mapping %}
+{%-       do defaults.update(val) %}
+{%-     else %}
+{%-       do defaults.update({ini: val}) %}
+{%-     endif %}
+{%-   endfor %}
+{%-   do defaults.update(pool_config.get("ini", {})) %}
+{%-   do pool_config.update({"ini": defaults}) %}
+{%- endif -%}
+
 ; This file is managed by Salt.
 ; Manual changes might be overwritten.
 
 [{{ pool_name }}]
-{%- for setting, value in php.fpm.pools[pool_name] | dictsort %}
-{%- if setting in ["listen", "access.log"] %}
-{%-   set value = value.format(name=pool_name, version=php.version) %}
-{%- endif %}
+{%- for setting, value in pool_config | dictsort %}
+{%-   if setting in ["ini", "ini_force"] %}
+{%-     continue %}
+{%-   elif setting in ["listen", "access.log"] %}
+{%-     set value = value.format(name=pool_name, version=php.version) %}
+{%-   endif %}
 {{ render_setting(setting, value) }}
+{%- endfor %}
+
+{%- for typ in ["ini", "ini_force"] %}
+{%-   for ini, val in pool_config.get(typ, {}) | dictsort %}
+{{ render_ini(ini, val, admin=typ=="ini_force") }}
+{%-   endfor %}
 {%- endfor %}

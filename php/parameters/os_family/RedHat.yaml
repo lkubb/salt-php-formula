@@ -9,15 +9,206 @@
 # If you do not need to provide defaults via the `os_family` config,
 # you can remove this file or provide at least an empty dict, e.g.
 # values: {}
+# yamllint disable rule:line-length
 ---
 values:
   lookup:
     pkg_manager: yum
     repos:
-      stable:
-        humanname: PHP stable
-        name: PHP stable
-        baseurl: https://FIXME/rpm/stable
-        gpgkey: https://FIXME/key.gpg
+      remi-safe:
+        name: remi-safe
+        humanname: Safe Remi's RPM repository for Enterprise Linux 9 - $basearch
+        mirrorlist: http://cdn.remirepo.net/{{ "enterprise" if grains.os != "Fedora" else "fedora" }}/{{ grains.osmajorrelease }}/safe/$basearch/mirror
         gpgcheck: 1
+        repo_gpgcheck: 1
+        gpgkey: https://rpms.remirepo.net/enterprise/{{ grains.osmajorrelease }}/RPM-GPG-KEY-remi
+      # Disabling only this is not supported by the formula currently since
+      # then it's not a drop-in replacement for the system repos
+      # (multiple versions, different paths). All `remi` repos should be disabled then.
+      remi-modular:
+        name: remi-modular
+        humanname: Remi's Modular repository for Enterprise Linux 9 - $basearch
+        mirrorlist: http://cdn.remirepo.net/{{ "enterprise" if grains.os != "Fedora" else "fedora" }}/{{ grains.osmajorrelease }}/modular/$basearch/mirror
+        gpgcheck: 1
+        repo_gpgcheck: 1
+        gpgkey: https://rpms.remirepo.net/enterprise/{{ grains.osmajorrelease }}/RPM-GPG-KEY-remi
+      remi-all:
+        rpm:
+          name: remi-release
+          url: https://rpms.remirepo.net/{{ "enterprise" if grains.os != "Fedora" else "fedora" }}/remi-release-{{ grains.osmajorrelease }}.rpm
+      # Including rpmfusion because some packages from remi might depend on them
+      rpmfusion-free:
+        rpm:
+          name: rpmfusion-free-release
+          url: https://mirrors.rpmfusion.org/free/{{ "el" if grains.os != "Fedora" else "fedora" }}/rpmfusion-free-release-{{ grains.osmajorrelease }}.noarch.rpm
+      rpmfusion-nonfree:
+        rpm:
+          name: rpmfusion-nonfree-release
+          url: https://mirrors.rpmfusion.org/nonfree/{{ "el" if grains.os != "Fedora" else "fedora" }}/rpmfusion-nonfree-release-{{ grains.osmajorrelease }}.noarch.rpm
+    enablerepo:
+      remi-safe: true
+      remi-modular: true
+      remi-all: false
+      rpmfusion-free: false
+      rpmfusion-nonfree: false
+      stable: null
+    config: '/etc/php.ini'
+    cli:
+      ini: /etc/php-cli.ini
+    extra_pkgs: []
+    fpm:
+      config: /etc/php-fpm.conf
+      ini: false
+      pool_defaults:
+        listen: /run/php-fpm/{name}.sock
+      pools: /etc/php-fpm.d
+      service:
+        name: php-fpm
+    pkg:
+      default: php-{name}
+      php: php
+      fpm: php-fpm
+      ahocorasick: php-pecl-ahocorasick
+      amqp: php-pecl-amqp
+      apcu: php-pecl-apcu
+      apfd: php-pecl-apfd
+      awscrt: php-pecl-awscrt
+      base58: php-pecl-base58
+      bitset: php-pecl-bitset
+      bsdiff: php-pecl-bsdiff
+      cassandra: php-pecl-cassandra
+      couchbase3: php-pecl-couchbase3
+      couchbase4: php-pecl-couchbase4
+      crypto: php-pecl-crypto
+      csv: php-pecl-csv
+      datadog-trace: php-pecl-datadog-trace
+      dbase: php-pecl-dbase
+      decimal: php-pecl-decimal
+      dio: php-pecl-dio
+      ds: php-pecl-ds
+      ecma-intl: php-pecl-ecma-intl
+      eio: php-pecl-eio
+      env: php-pecl-env
+      ev: php-pecl-ev
+      event: php-pecl-event
+      excimer: php-pecl-excimer
+      fann: php-pecl-fann
+      gearman: php-pecl-gearman
+      geoip: php-pecl-geoip
+      geospatial: php-pecl-geospatial
+      gmagick: php-pecl-gmagick
+      gnupg: php-pecl-gnupg
+      grpc: php-pecl-grpc
+      handlebars: php-pecl-handlebars
+      hdr-histogram: php-pecl-hdr-histogram
+      http: php-pecl-http
+      ice: php-pecl-ice
+      igbinary: php-pecl-igbinary
+      imagick: php-pecl-imagick-im7
+      imagick-im6: php-pecl-imagick-im6
+      imagick-im7: php-pecl-imagick-im7
+      immutable-cache: php-pecl-immutable-cache
+      inotify: php-pecl-inotify
+      ion: php-pecl-ion
+      ip2location: php-pecl-ip2location
+      ip2proxy: php-pecl-ip2proxy
+      json-post: php-pecl-json-post
+      jsonpath: php-pecl-jsonpath
+      krb5: php-pecl-krb5
+      leveldb: php-pecl-leveldb
+      luasandbox: php-pecl-luasandbox
+      lzf: php-pecl-lzf
+      mailparse: php-pecl-mailparse
+      mcrypt: php-pecl-mcrypt
+      memcache: php-pecl-memcache
+      memcached: php-pecl-memcached
+      memprof: php-pecl-memprof
+      mongodb: php-pecl-mongodb
+      msgpack: php-pecl-msgpack
+      mustache: php-pecl-mustache
+      mysql: php-pecl-mysql
+      mysql-xdevapi: php-pecl-mysql-xdevapi
+      mysqlnd-krb: php-pecl-mysqlnd-krb
+      nsq: php-pecl-nsq
+      oauth: php-pecl-oauth
+      opencensus: php-pecl-opencensus
+      openswoole: php-pecl-openswoole
+      openswoole22: php-pecl-openswoole22
+      opentelemetry: php-pecl-opentelemetry
+      pam: php-pecl-pam
+      parle: php-pecl-parle
+      pcov: php-pecl-pcov
+      pcsc: php-pecl-pcsc
+      pkcs11: php-pecl-pkcs11
+      pq: php-pecl-pq
+      protobuf: php-pecl-protobuf
+      ps: php-pecl-ps
+      psr: php-pecl-psr
+      quickhash: php-pecl-quickhash
+      raphf: php-pecl-raphf
+      rar: php-pecl-rar
+      rdkafka6: php-pecl-rdkafka6
+      recode: php-pecl-recode
+      redis: php-pecl-redis6
+      redis5: php-pecl-redis5
+      redis6: php-pecl-redis6
+      rnp: php-pecl-rnp
+      rpminfo: php-pecl-rpminfo
+      rrd: php-pecl-rrd
+      runkit7: php-pecl-runkit7
+      scoutapm: php-pecl-scoutapm
+      scrypt: php-pecl-scrypt
+      sdl: php-pecl-sdl
+      sdl-image: php-pecl-sdl-image
+      sdl-mixer: php-pecl-sdl-mixer
+      sdl-ttf: php-pecl-sdl-ttf
+      seasclick: php-pecl-seasclick
+      seaslog: php-pecl-seaslog
+      seassnowflake: php-pecl-seassnowflake
+      selinux: php-pecl-selinux
+      simdjson: php-pecl-simdjson
+      simple-kafka-client: php-pecl-simple-kafka-client
+      skywalking: php-pecl-skywalking
+      skywalking-agent: php-pecl-skywalking-agent
+      solr2: php-pecl-solr2
+      ssdeep: php-pecl-ssdeep
+      ssh2: php-pecl-ssh2
+      stats: php-pecl-stats
+      stomp: php-pecl-stomp
+      swoole4: php-pecl-swoole4
+      swoole5: php-pecl-swoole5
+      sync: php-pecl-sync
+      teds: php-pecl-teds
+      tensor: php-pecl-tensor
+      trader: php-pecl-trader
+      translit: php-pecl-translit
+      trie: php-pecl-trie
+      uopz: php-pecl-uopz
+      uploadprogress: php-pecl-uploadprogress
+      uuid: php-pecl-uuid
+      uv: php-pecl-uv
+      var-representation: php-pecl-var-representation
+      varnish: php-pecl-varnish
+      vips: php-pecl-vips
+      vld: php-pecl-vld
+      xattr: php-pecl-xattr
+      xdebug3: php-pecl-xdebug3
+      xdiff: php-pecl-xdiff
+      xhprof: php-pecl-xhprof
+      xlswriter: php-pecl-xlswriter
+      xmldiff: php-pecl-xmldiff
+      xmlrpc: php-pecl-xmlrpc
+      xxtea: php-pecl-xxtea
+      yac: php-pecl-yac
+      yaconf: php-pecl-yaconf
+      yaf: php-pecl-yaf
+      yaml: php-pecl-yaml
+      yar: php-pecl-yar
+      yaz: php-pecl-yaz
+      zip: php-pecl-zip
+      zmq: php-pecl-zmq
+  fpm:
+    config:
+      error_log: /var/log/php-fpm/error.log
+      pid: /run/php-fpm/php-fpm.pid
 ...

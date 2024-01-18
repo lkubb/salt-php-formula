@@ -8,6 +8,8 @@
 include:
   - {{ sls_package_install }}
 
+{%- if php.lookup.fpm.ini  %}
+
 PHP-FPM php.ini is managed:
   file.managed:
     - name: {{ php.lookup.fpm.ini.format(version=php.version) }}
@@ -28,3 +30,4 @@ PHP-FPM php.ini is managed:
         php: {{ php | json }}
     - require:
       - sls: {{ sls_package_install }}
+{%- endif %}
