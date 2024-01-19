@@ -11,7 +11,6 @@ php:
     config: '/etc/php.ini'
     cli:
       ini: /etc/php/{version}/cli/conf.d/50-salt.ini
-    extra_pkgs: []
     fpm:
       config: /etc/php/{version}/fpm/php-fpm.conf
       ini: /etc/php/{version}/fpm/conf.d/50-salt.ini
@@ -38,6 +37,7 @@ php:
   cli:
     ini: {}
   config: {}
+  extra_pkgs: []
   fpm:
     config:
       error_log: /var/log/php{version}-fpm.log

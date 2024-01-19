@@ -8,6 +8,9 @@ php:
     ini: {}
     # Default php.ini configuration
   config: {}
+    # A list of extra system packages to install,
+    # e.g. for weak dependencies of modules
+  extra_pkgs: []
     # PHP-FPM settings
   fpm:
       # PHP-FPM global configuration
@@ -57,7 +60,6 @@ php:
   lookup:
     cli:
       ini: /etc/php/{version}/cli/conf.d/50-salt.ini
-    extra_pkgs: []
     fpm:
       config: /etc/php/{version}/fpm/php-fpm.conf
       ini: /etc/php/{version}/fpm/conf.d/50-salt.ini
