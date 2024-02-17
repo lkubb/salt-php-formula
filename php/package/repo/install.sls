@@ -67,18 +67,18 @@ CRB and EPEL repos are enabled:
     - require_in:
       - PHP is installed
 
-{%- if grains.os == "Rocky" %}
+{%-   if grains.os == "Rocky" %}
   cmd.run:
     - name: crb enable
     - unless:
       - crb status | grep 'is enabled'
 
-{%- elif grains.os == "AlmaLinux" %}
+{%-   elif grains.os == "AlmaLinux" %}
   cmd.run:
     - name: dnf config-manager --set-enabled crb
     - unless:
       - dnf repolist --enabled | grep -e '^crb'
-{%- endif %}
+{%-   endif %}
     - require_in:
       - PHP is installed
 {%- endif %}
